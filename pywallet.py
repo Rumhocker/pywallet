@@ -71,7 +71,7 @@ import os
 import os.path
 import platform
 
-max_version = 81000
+max_version = 60000
 addrtype = 0
 json_db = {}
 private_keys = []
@@ -79,14 +79,11 @@ private_hex_keys = []
 passphrase = ""
 global_merging_message = ["",""]
 
-balance_site = 'https://blockchain.info/q/addressbalance/'
+balance_site = 'http://crypto2.net/dem/address.php?chain=1&addr='
 aversions = {};
 for i in range(256):
 	aversions[i] = "version %d" % i;
-aversions[0] = 'Bitcoin';
-aversions[48] = 'Litecoin';
-aversions[52] = 'Namecoin';
-aversions[111] = 'Testnet';
+aversions[53] = 'eMark';
 
 wallet_dir = ""
 wallet_name = ""
@@ -119,10 +116,10 @@ def systype():
 def determine_db_dir():
 	if wallet_dir in "":
 		if platform.system() == "Darwin":
-			return os.path.expanduser("~/Library/Application Support/Bitcoin/")
+			return os.path.expanduser("~/Library/Application Support/eMark/")
 		elif platform.system() == "Windows":
-			return os.path.join(os.environ['APPDATA'], "Bitcoin")
-		return os.path.expanduser("~/.bitcoin")
+			return os.path.join(os.environ['APPDATA'], "eMark")
+		return os.path.expanduser("~/.eMark")
 	else:
 		return wallet_dir
 
@@ -2002,7 +1999,7 @@ def open_wallet(db_env, walletfile, writable=False):
 		r = True
 
 	if r is not None:
-		logging.error("Couldn't open wallet.dat/main. Try quitting Bitcoin and running this again.")
+		logging.error("Couldn't open wallet.dat/main. Try quitting eMark and running this again.")
 		sys.exit(1)
 
 	return db
@@ -3389,7 +3386,7 @@ if 'twisted' not in missing_dep:
 					color="#DDDDDD"
 
 				global pywversion
-				header = '<h1 title="'+pyw_filename+' in '+pyw_path+'">Pywallet Web Interface v'+pywversion+'</h1><h3>CLOSE BITCOIN BEFORE USE!</h3><div style="position:fixed;top:5px;right:5px;border:solid 1px black;padding:15px;background-color:'+color+';font-weight:bold;text-align:center;">' + check_version_text + '</div><br /><br />'
+				header = '<h1 title="'+pyw_filename+' in '+pyw_path+'">Pywallet Web Interface v'+pywversion+'</h1><h3>CLOSE eMark BEFORE USE!</h3><div style="position:fixed;top:5px;right:5px;border:solid 1px black;padding:15px;background-color:'+color+';font-weight:bold;text-align:center;">' + check_version_text + '</div><br /><br />'
 
 				CPPForm = WI_FormInit('Change passphrase:', 'ChangePP', 'divformcpp') + \
 							WI_InputPassword('', 'pp', 'cppf-pp', '') + \
@@ -3401,7 +3398,7 @@ if 'twisted' not in missing_dep:
 				DWForm = WI_FormInit('Dump your wallet:', 'DumpWallet', 'divformdw') + \
 							WI_InputText('Wallet Directory: ', 'dir', 'dwf-dir', determine_db_dir()) + \
 							WI_InputText('Wallet Filename: ', 'name', 'dwf-name', determine_db_name(), 20) + \
-							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for Bitcoin, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'dwf-vers', '0', 1) + \
+							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for eMark, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'dwf-vers', '0', 1) + \
 							WI_Checkbox('bal', 'y', 'dwf-bal', '', ' Dump with balance (can take minutes)') + "<br />" + \
 							WI_Submit('Dump wallet', 'DWDiv', 'dwf-close', 'ajaxDW') + \
 							WI_CloseButton('DWDiv', 'dwf-close') + \
@@ -3427,7 +3424,7 @@ if 'twisted' not in missing_dep:
 				DKForm = WI_FormInit('Dump your keys:', 'DumpKeys', 'divformdk') + \
 							WI_InputText('Wallet Directory: ', 'dir', 'dkf-dir', determine_db_dir()) + \
 							WI_InputText('Wallet Filename: ', 'name', 'dkf-name', determine_db_name(), 20) + \
-							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for Bitcoin, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'dkf-vers', '0', 1) + \
+							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for eMark, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'dkf-vers', '0', 1) + \
 							WI_InputText('Output file: ', 'file', 'dkf-file', '', 60) + \
 							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="to be chosen from the ones in wallet dump, separated with \',\', e.g. \'addr,secret\'">Data to print: </span>', 'keys', 'dkf-keys', '') + \
 							WI_Checkbox('bal', 'y', 'dkf-bal', '', ' Dump with balance (can take minutes)') + "<br />" + \
@@ -3465,7 +3462,7 @@ if 'twisted' not in missing_dep:
 							prehide_ecdsa + WI_InputText('Message: ', 'msg', 'if-msg', '', 30) + posthide_ecdsa + \
 							prehide_ecdsa + WI_InputText('Signature: ', 'sig', 'if-sig', '', 30) + posthide_ecdsa + \
 							prehide_ecdsa + WI_InputText('Pubkey: ', 'pubkey', 'if-pubkey', '', 30) + posthide_ecdsa + \
-							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for Bitcoin, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'if-vers', '0', 1) + \
+							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for eMark, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'if-vers', '0', 1) + \
 							"Format:<br />" + \
 							WI_RadioButton('format', 'reg', 'if-reg', 'CHECKED', ' Regular, base 58') + \
 							WI_RadioButton('format', 'hex', 'if-hex', '', ' Hexadecimal, 64 characters long') + \
@@ -3485,7 +3482,7 @@ if 'twisted' not in missing_dep:
 							WI_InputText('Key:', 'key', 'impf-key', '', 65) + \
 							WI_InputText('Label:', 'label', 'impf-label', '') + \
 							WI_Checkbox('reserve', 'true', 'impf-reserve', 'onClick="document.getElementById(\'impf-label\').disabled=document.getElementById(\'impf-reserve\').checked"', ' Reserve') + "<br />" + \
-							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for Bitcoin, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'impf-vers', '0', 1) + \
+							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="0 for eMark, 52 for Namecoin, 111 for testnets">Version</span>:', 'vers', 'impf-vers', '0', 1) + \
 							"Format:<br />" + \
 							WI_Checkbox('format', 'hex', 'impf-hex', '', ' Hexadecimal, instead of base58') + "<br />" + \
 							WI_Checkbox('format', 'cry', 'impf-cry', 'hidden=true', '<!-- Crypt-->') + \
@@ -3514,7 +3511,7 @@ if 'twisted' not in missing_dep:
 							WI_InputText('<span style="border: 0 dashed;border-bottom-width:1px;" title="divided by \'-\'">Keys</span>:', 'key', 'd-key', '', 65) + \
 							"Type:<br />" + \
 							WI_RadioButton('d-type', 'tx', 'd-r-tx', 'CHECKED', ' Transaction (type "all" in "Keys" to delete them all)') + \
-							WI_RadioButton('d-type', 'key', 'd-r-key', '', ' Bitcoin address') + \
+							WI_RadioButton('d-type', 'key', 'd-r-key', '', ' eMark address') + \
 							WI_Submit('Delete', 'DeleteDiv', 'd-close', 'ajaxDelete') + \
 							WI_CloseButton('DeleteDiv', 'd-close') + \
 							WI_ReturnDiv('DeleteDiv') + \
@@ -3530,7 +3527,7 @@ if 'twisted' not in missing_dep:
 							WI_ReturnDiv('ImportTxDiv') + \
 							WI_FormEnd()
 
-				BalanceForm = WI_FormInit('Print the balance of a Bitcoin address:', 'Balance', 'divformbalance') + \
+				BalanceForm = WI_FormInit('Print the balance of a eMark address:', 'Balance', 'divformbalance') + \
 							WI_InputText('Key:', 'key', 'bf-key', '', 35) + \
 							WI_Submit('Get balance', 'BalanceDiv', 'gb-close', 'ajaxBalance') + \
 							WI_CloseButton('BalanceDiv', 'gb-close') + \
@@ -3616,8 +3613,8 @@ To support pywallet's development or if you think it's worth something, you can 
 
 				return html_wui(Javascript + \
 					WI_Endiv(DWForm+DKForm+DTxForm, 'DumpPage', 'Dump', '') + \
-					WI_Endiv(ImportForm+IKForm+MWForm+ImportTxForm+ImportROForm,'ImportPage', 'Import', "Don't forget to close Bitcoin when you modify your wallet", True) + \
-					WI_Endiv(DeleteForm,'DeletePage', 'Delete', "Don't forget to close Bitcoin when you modify your wallet", True) + \
+					WI_Endiv(ImportForm+IKForm+MWForm+ImportTxForm+ImportROForm,'ImportPage', 'Import', "Don't forget to close eMark when you modify your wallet", True) + \
+					WI_Endiv(DeleteForm,'DeletePage', 'Delete', "Don't forget to close eMark when you modify your wallet", True) + \
 					WI_Endiv(CPPForm,'PassphrasePage', 'Change passphrase', '', True) + \
 					WI_Endiv(InfoForm+BalanceForm,'InfoPage', 'Info', '', True) + \
 					WI_Endiv(CreateTxForm2+CreateTxForm,'TxPage', 'Manage transactions', 'You can here create your own transactions. <br />By default, the unspent transactions from addresses previously dumped are shown, but you can add other addresses to check.<br />You can\'t create a transaction if you didn\'t dump the private keys of each input beforehand.', True) + \
@@ -4754,7 +4751,7 @@ if __name__ == '__main__':
 		help="KEY is in hexadecimal format")
 
 	parser.add_option("--datadir", dest="datadir",
-		help="wallet directory (defaults to bitcoin default)")
+		help="wallet directory (defaults to eMark default)")
 
 	parser.add_option("--wallet", dest="walletfile",
 		help="wallet filename (defaults to wallet.dat)",
@@ -5041,7 +5038,6 @@ if __name__ == '__main__':
 				print "Bad private key"
 
 			db.close()
-
 
 
 
